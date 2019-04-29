@@ -1,0 +1,109 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% load widget_tweaks %}
+
+{% block title %} Pay by credit card{% endblock %}
+{% block content %}
+<div class="container">
+  <div class="row">
+    <div class="col-md-12 offset-3">
+  <div class="menubar-hoverable header-fixed pull-center ">
+
+    <!-- BEGIN LOGIN SECTION -->
+    <section class="section-account">
+      <div class="img-backdrop" style="background-image: url('img/img16.jpg')"></div>
+      <!--<div class="spacer"></div>-->
+      <div class="card contain-sm style-transparent" style="max-width:450px">
+        <div class="card-body">
+                    <h2 class="text-center" style="font-size: 20px; margin-bottom: 20px; color: #f70b0b">Moi University Market Place <span style="color: #1ab394; font-weight: 900">Welcome</span></h2>
+          <div class="card">
+            <div class="card-body">
+              <span class="text-lg text-bold text-primary"> <h1>Pay by credit card</h1></span>
+             </div>
+              <div class="login-form">
+              <form class="form floating-label" action="." accept-charset="utf-8" method="post">
+                  <div class="form-group">
+                  <div class="col-md-6 text-right">
+                     <label for="card-number">Card Number</label>
+                     <div id="card-number" class="field"></div>
+
+                     <label for="cvv">CVV</label>
+                     <div id="cvv" class="field"></div>
+
+                     <label for="expiration-date">Expiration Date</label>
+                     <div id="expiration-date" class="field"></div>
+
+                     <input type="hidden" id="nonce" name="payment_method_nonce" value="">
+                     {% csrf_token %}
+                     <input type="submit" value="Pay">
+
+                </div><!--end .col -->
+                </div><!--end .row -->
+              </form>
+             </div>
+            </div>       
+          </div>
+        </div><!--end .card -->
+      </div>
+    </section>
+    <!-- Load the required client component. -->
+<script src="https://www.paypal.com/sdk/js?client-id=sb"></script>
+<script>paypal.Buttons().render('body');</script>
+  <script src="{% static 'js/client.min.js' %} "></script>
+  <!-- Load Hosted Fields component. -->
+  <script src=" {% static 'js/hosted-fields.min.js' %}"></script>
+  <script>
+    var form = document.querySelector('#payment');
+    var submit = document.querySelector('input[type="submit"]');
+
+    braintree.client.create({
+      authorization: '{{ client_token }}'
+    }, function (clientErr, clientInstance) {
+      if (clientErr) {
+        console.error(clientErr);
+        return;
+      }
+
+      braintree.hostedFields.create({
+        client: clientInstance,
+        styles: {
+          'input': {'font-size': '13px'},
+          'input.invalid': {'color': 'red'},
+          'input.valid': {'color': 'green'}
+        },
+        fields: {
+          number: {selector: '#card-number'},
+          cvv: {selector: '#cvv'},
+          expirationDate: {selector: '#expiration-date'}
+        }
+      }, function (hostedFieldsErr, hostedFieldsInstance) {
+        if (hostedFieldsErr) {
+          console.error(hostedFieldsErr);
+          return;
+        }
+
+        submit.removeAttribute('disabled');
+
+        form.addEventListener('submit', function (event) {
+          event.preventDefault();
+
+          hostedFieldsInstance.tokenize(function (tokenizeErr, payload) {
+            if (tokenizeErr) {
+              console.error(tokenizeErr);
+              return;
+            }
+            // set nonce to send to the server
+            document.getElementById('nonce').value = payload.nonce;
+            // submit form
+            document.getElementById('payment').submit();
+          });
+        }, false);
+      });
+    });
+  </script>
+  </div>
+</div>
+</div>
+</div>
+  {% endblock %}
+    

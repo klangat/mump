@@ -1,0 +1,21 @@
+<div  class="container" style="color: grey">
+  <div class="row">
+    <div class="col-sm-4" style="background-color: #dedef8;
+     box-shadow: inset 1px -1px 1px #144, inset -1px 1px 1px #144; ">
+      <div class="card" style="width: 18rem">  
+      {% if instance.image %}
+       <a href="{{ instance.get_absolute_url }}" class="thumbnail "><img class="card-img-top" src="{{ instance.image.url }}" alt="{{ instance.title}} logo"  height="200" width="35"></a>
+          {% endif %}
+          <div class="card-body">
+            <h5 class="card-title">{{ instance.title }}</h5>
+            <p class="card-text">{{ instance.description|linebreaks|truncatewords:14 }}</p>  
+            <h5>Price:{{instance.price}}  </h5>
+           <div class='text-center'>
+                    <a href="{{ instance.get_absolute_url }}" class="btn btn-warning my-2">View</a>
+                    {% include 'products/snippets/update-cart.html' with product=instance cart=cart %}
+            </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

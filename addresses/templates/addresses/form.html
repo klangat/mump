@@ -1,0 +1,21 @@
+
+<div class='row'>
+    <div class='col-10 mx-auto col-md-6 '>
+    <form method='POST' action='{% if action_url %}{{ action_url }}{% else %}{% url "login" %}{% endif %}'>
+    {% csrf_token %}
+    {% if next_url %}
+    <input type='hidden' name='next' value='{{ next_url }}' />
+    {% endif %}
+
+    {% if address_type %}
+    <input type='hidden' name='address_type' value='{{ address_type }}' />
+    {% endif %}
+  	<table>
+      		{{ form.as_table}}
+    </table>
+     <div class='col-md-10 pull-right'>
+      		<button type='submit' class='btn btn-primary'>Submit</button>
+  	 </div>
+    </form>
+  </div>
+</div>

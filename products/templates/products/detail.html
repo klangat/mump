@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="container">
+    <div class='row'>
+        <div class='col-12 offset-4' >
+                <h1>{{ object.title }}</h1>
+                {{ object.timestamp|timesince }} ago
+                {{ object.description|linebreaks }}<br/>
+            <row>
+                <div class="col-md-4 " >
+                        <img src='{{ object.image.url }}' class='img-responsive'>
+                </div>
+            </row>
+            <div class='col-12  pull-right'>
+                {% include 'products/snippets/update-cart.html' with product=object cart=cart %}
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}

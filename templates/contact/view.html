@@ -1,0 +1,29 @@
+{% extends "base.html"%}
+{% load staticfiles %}
+{% load widget_tweaks %}
+{% block content%}
+<div class="container" style="background-color: gray ;color: green">
+  <div class="row">
+    <div class="col-md-12 offset-3 pull-bottom">
+      <div class="section-account ">
+            <div class="img-backdrop" style="background-image: url('img/img16.jpg')"></div>
+            <!--<div class="spacer"></div>-->
+            <div class="card contain-sm style-transparent" style="max-width:450px">
+              <div class="card-body">
+                          <h2 class="text-center" style="font-size: 20px; margin-bottom: 20px; color: #f70b0b">Contct<br><span style="color: #1ab394; font-weight: 900">Us</span></h2>
+                <form class='contact-form' method='POST' action='{% url "contact" %}'> 
+                  {% csrf_token %}
+                  <table>
+                  {{ form.as_table}}
+                  </table>
+                  <div class="col-md-10 pull-right">
+                    <button type='submit' class='btn btn-primary'>Submit</button>
+                  </div>
+                </form>
+                                           
+                </div>        
+                </div>
+            </div>
+        </div>
+      </div>
+{% endblock %}
